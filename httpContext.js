@@ -18,7 +18,7 @@ export default class HttpContext {
         this.req = req;
         this.res = res;
         this.path = utilities.decomposePath(req.url);
-        this.response = new Response(res);
+        this.response = new Response(res, this);
         this.payload = null;
         this.secure = req.headers['x-forwarded-proto'] != undefined;
         this.host = (this.secure ? "https://" : "http://") + req.headers["host"];

@@ -7,6 +7,7 @@ import MiddlewaresPipeline from './middlewaresPipeline.js';
 import * as router from './router.js';
 import { handleCORSPreflight } from './cors.js';
 import { handleStaticResourceRequest } from './staticResourcesServer.js';
+import CachedRequestsManager from './models/CachedRequestsManager.js';
 export default class APIServer {
     constructor(port = process.env.PORT || 5000) {
         this.port = port;
@@ -20,10 +21,10 @@ export default class APIServer {
 
         // common middlewares
         this.middlewaresPipeline.add(handleCORSPreflight);
+        this.middlewaresPipeline.add(CachedRequestsManager.get);
         this.middlewaresPipeline.add(handleStaticResourceRequest);
 
         // API middlewares
-
         this.middlewaresPipeline.add(router.API_EndPoint);
     }
     async handleHttpRequest(req, res) {
